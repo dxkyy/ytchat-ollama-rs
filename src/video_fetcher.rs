@@ -10,7 +10,7 @@ pub struct VideoInfo {
     pub channel_title: String,
     pub published_at: String,
     pub transcript: String,
-    pub transcript_length: usize,
+    // pub transcript_length: usize,
 }
 
 pub async fn fetch_video_data(
@@ -68,7 +68,7 @@ pub async fn fetch_video_data(
                     .to_string(),
 
                 transcript: transcript.to_string(),
-                transcript_length: transcript.len(),
+                // transcript_length: transcript.len(),
             };
 
             return Ok(Some(video_info));

@@ -8,7 +8,7 @@ use ollama_rs::generation::chat::MessageRole;
 use ollama_rs::Ollama;
 use std::env;
 use tokio::io::AsyncWriteExt;
-use video_fetcher::{fetch_video_data, VideoInfo};
+use video_fetcher::fetch_video_data;
 use yt_chat::consts::MODEL;
 use yt_chat::Result;
 // endregion:   --- Modules
@@ -66,7 +66,7 @@ async fn main() -> Result<()> {
                 stdout.write_all(b"> ").await?;
                 stdout.flush().await?;
                 let mut input = String::new();
-                std::io::stdin().read_line(&mut input);
+                let _ = std::io::stdin().read_line(&mut input);
                 let input = input.trim_end();
                 if input.eq_ignore_ascii_case("exit") {
                     break;

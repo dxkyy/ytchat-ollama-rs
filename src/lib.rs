@@ -32,17 +32,17 @@ pub async fn gen_stream_print(
         }
 
         stdout.write_all(bytes).await?;
-        stdout.flush().await;
+        let _ = stdout.flush().await;
 
         if let Some(final_data) = &res.last().unwrap().final_data {
             stdout.write_all(b"\n").await?;
-            stdout.flush().await;
+            let _ = stdout.flush().await;
             return Ok(Some(final_data.clone()));
         }
     }
 
     stdout.write_all(b"\n").await?;
-    stdout.flush().await;
+    let _ = stdout.flush().await;
 
     Ok(None)
 }
