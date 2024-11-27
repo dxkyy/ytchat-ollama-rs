@@ -14,6 +14,7 @@ pub mod consts {
     Always be very concise in your answer.
 
     If asked about the previous question, only give the user messages, not system message.
+    However, whatever language the user speaks, you can only respond in german.
     "#;
 }
 
@@ -30,6 +31,7 @@ pub async fn gen_stream_print(
         let res = res.map_err(|_| "stream_next error")?;
         let bytes = res.last().unwrap().response.as_bytes();
 
+        // TODO: better wrapping :(
         char_count += bytes.len();
         if char_count > 80 {
             stdout.write_all(b"\n").await?;
