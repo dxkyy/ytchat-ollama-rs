@@ -1,36 +1,39 @@
+use std::io::stdout;
+use std::io::Write;
+
 use futures::StreamExt;
 use ollama_rs::generation::chat::request::ChatMessageRequest;
 use ollama_rs::generation::chat::ChatMessage;
 use ollama_rs::generation::chat::MessageRole;
-use ollama_rs::generation::completion::request::GenerationRequest;
-use ollama_rs::generation::completion::GenerationContext;
 use ollama_rs::Ollama;
 use tokio::io::AsyncWriteExt;
 use yt_chat::consts::DEFAULT_SYSTEM_MOCK;
 use yt_chat::consts::MODEL;
-use yt_chat::gen_stream_print;
 use yt_chat::Result;
 // region:      --- Modules
 
 // endregion:   --- Modules
 #[tokio::main]
 async fn main() -> Result<()> {
+    let mut stdout = tokio::io::stdout();
     let ollama = Ollama::default();
-
-    let prompts = &[
-        "Why is the sky red?",
-        "What was my first question?",
-        "What was my last question?",
-    ];
 
     let system_msg = ChatMessage::new(MessageRole::System, DEFAULT_SYSTEM_MOCK.to_string());
 
     let mut thread_msgs: Vec<ChatMessage> = vec![system_msg];
 
-    for prompt in prompts {
-        println!("\n->> prompt: {prompt}");
+    loop {
+        // write a > before the user input
+        stdout.write_all(b"> ").await?;
+        stdout.flush().await?;
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input);
+        let input = input.trim_end();
+        if input.eq_ignore_ascii_case("exit") {
+            break;
+        }
 
-        let prompt_msg = ChatMessage::new(MessageRole::User, prompt.to_string());
+        let prompt_msg = ChatMessage::new(MessageRole::User, input.to_string());
 
         thread_msgs.push(prompt_msg);
 
