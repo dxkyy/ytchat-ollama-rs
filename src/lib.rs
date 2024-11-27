@@ -9,13 +9,6 @@ pub type Error = Box<dyn std::error::Error>;
 
 pub mod consts {
     pub const MODEL: &str = "llama3";
-
-    pub const DEFAULT_SYSTEM_MOCK: &str = r#"
-    Always be very concise in your answer.
-
-    If asked about the previous question, only give the user messages, not system message.
-    However, whatever language the user speaks, you can only respond in german.
-    "#;
 }
 
 pub async fn gen_stream_print(
